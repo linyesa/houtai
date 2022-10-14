@@ -6,6 +6,7 @@ import LoginTo from "../components/LoginTo"
 import HelloWorld from "../components/HelloWorld";
 import index from "../components/index"
 import son from "../components/son"
+import SystemAdmin from "../components/SystemAdmin";
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
@@ -29,6 +30,10 @@ const routes = [
                 component: son
             }],
     },
+    {
+        path:"/admin",
+        component: SystemAdmin
+    }
 
 ]
 
