@@ -20,7 +20,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-radio v-model="type" label="systemAdmin">管理员</el-radio>
+        <el-radio v-model="type" label="systemAdmin">用户</el-radio>
         <el-radio style="position: relative;left: 80px" v-model="type" label="dormitoryAdmin">系统管理员</el-radio>
       </el-form-item>
       <el-form-item style="width:100%;">
@@ -71,8 +71,9 @@ export default {
               if(resp.data.code == 0){
                 //跳转到SystemAdmin
                 //展示当前登录用户信息
-                localStorage.setItem('dormitoryAdmin', JSON.stringify(resp.data.data));
-                _this.$router.replace({path: '/dormitoryAdmin'})
+                localStorage.setItem('systemAdmin', JSON.stringify(resp.data.data));
+                _this.$router.replace({path: '/admin'})
+                console.log("aaa",localStorage.getItem('systemAdmin'))
               }
             })
           }

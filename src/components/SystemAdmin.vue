@@ -5,7 +5,7 @@
       <div class="home_userinfoContainer">
         <el-dropdown>
                   <span class="el-dropdown-link home_userinfo">
-                    {{admin.name}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
+                    {{admin.username}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
                   </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
@@ -20,11 +20,11 @@
         <el-menu router>
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-s-platform"></i>景点管理</template>
-            <el-menu-item index="/dormitoryAdminAdd" :class="$route.path=='/dormitoryAdminAdd'?'is-active':''">
-              <i class="el-icon-folder-add"></i>信息发布
+            <el-menu-item index="/admin/scenicspot" :class="$route.path=='/admin/scenicspot'?'is-active':''">
+              <i class="el-icon-folder-add"></i>景点列表
             </el-menu-item>
-            <el-menu-item index="/dormitoryAdminManager" :class="$route.path=='/dormitoryAdminManager'?'is-active':''">
-              <i class="el-icon-document-copy"></i>信息修改
+            <el-menu-item index="/admin/scenicspotadd" :class="$route.path=='/admin/scenicspotadd'?'is-active':''">
+              <i class="el-icon-document-copy"></i>添加景点
             </el-menu-item>
             <el-menu-item index="/dormitoryAdminManager" :class="$route.path=='/dormitoryAdminManager'?'is-active':''">
               <i class="el-icon-document-copy"></i>信息查询
@@ -108,7 +108,7 @@ export default{
         type: 'warning'
       }).then(function () {
         localStorage.removeItem('systemAdmin')
-        _this.$router.replace({path: '/login'})
+        _this.$router.replace({path: '/loginto'})
       })
     }
   },
@@ -116,6 +116,10 @@ export default{
     return {
       admin:''
     }
+  },
+  created() {
+    let admin=JSON.parse(window.localStorage.getItem("systemAdmin"));
+    this.admin=admin
   }
 }
 </script>

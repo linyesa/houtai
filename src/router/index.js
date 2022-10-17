@@ -7,6 +7,9 @@ import HelloWorld from "../components/HelloWorld";
 import index from "../components/index"
 import son from "../components/son"
 import SystemAdmin from "../components/SystemAdmin";
+import ScenicSpot from "../components/ScenicSpot";
+import ScenicSpotAdd from "../components/ScenicSpotAdd";
+import ScenicSpotManager from "../components/ScenicSpotManager";
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
@@ -32,7 +35,23 @@ const routes = [
     },
     {
         path:"/admin",
-        component: SystemAdmin
+        component: SystemAdmin,
+        redirect:'/admin/scenicspot',
+        children:[
+            {
+                path:'scenicspot',
+                component: ScenicSpot
+
+            },
+            {
+                path:"scenicspotadd",
+                component: ScenicSpotAdd
+            },
+            {
+                path:"scenicspotmanager",
+                component: ScenicSpotManager
+            }
+        ],
     }
 
 ]
