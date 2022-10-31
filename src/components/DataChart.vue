@@ -1,70 +1,96 @@
 <template>
-  <div class="hello">
-    <el-select v-model="value" placeholder="请选择">
-      <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-      </el-option>
-    </el-select>
-    <i class="el-icon-s-data"  style="color:blue;font-size:100%"></i>
-    <i class="el-icon-water-cup"  style="color:blue;font-size:100%"></i>ballball
-    <div id="myChart" :style="{ width: '800px', height: '500px' }"></div>
-    <div>
-      <button @click='getAmountSum("已支付")'>button</button>
-      <button @click="change">change button</button>
-    </div>
-    <div>{{test1[0]}}</div>
-  </div>
+<div>
+  <button @click="allchange">显示数据</button>
+  <el-row>
+    <el-col :span="12">
+  <div id="myChart" :style="{ width: '800px', height: '500px',marginTop: '200px' }"></div>
+    </el-col>
+    <el-col :span="12" >
+      <div id="myChart1" :style="{ width: '800px', height: '500px' ,marginTop:'200px'}"></div>
+    </el-col>
+  </el-row>
+</div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
+  name: "DataChart",
   data(){
-   return{
-     value:'',
-     options: [{
-       value: '已支付',
-       label: '已支付'
-     }, {
-       value: '已退款',
-       label: '已退款'
-     }, {
-       value: '已完成',
-       label: '已完成'
-     }],
-     test1:[0,1]
-   }
+    return{
+      orderByStatusSum:[234,3244,435,3453],
+
+    }
   },
   methods: {
-    change(){
-      // this.test1[0]=100
-      console.log(this.test1)
-      this.$set(this.test1,0,100)
-      console.log(this.test1)
+    allchange(){
+      this.drawChart()
+      this.drawLine()
     },
-    test(str){
-      console.log(str)
-    },
-    getAmountSum(status){
+    async setAmountSum(status,index){
       const _this=this;
-      _this.axios.get("http://localhost:9090/order/getamountsum/"+status).then(function (resp){
-        console.log(resp)
+      await _this.axios.get("http://localhost:9090/order/getamountsum/"+status).then(function (resp){
+        // _this.orderByStatusSum[num]=resp.data
+         _this.$set(_this.orderByStatusSum,index,resp.data)
+        // _this.orderByStatusSum.splice(index,1,resp.data)
       })
     },
     drawLine() {
+      const _this=this;
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart"));
       // 绘制图表
       myChart.setOption({
+        title: {
+          text: "订单支付状况",
+          left: "center",
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c} ({d}%)",
+        },
+        legend: {
+          top: "10%",
+          left: "center",
+        },
+        color: ['#6eb158', '#cdcdcd', '#3f8cff','#E6A23C'],
+        series: [
+          {
+            name: "支付金额状况",
+            type: "pie",
+            radius: "50%",
+            data: [
+              { value: _this.orderByStatusSum[0], name: "已支付金额" },
+              { value: _this.orderByStatusSum[1], name: "未支付金额" },
+              { value: _this.orderByStatusSum[2], name: "已退款金额" },
+              { value: _this.orderByStatusSum[3], name: "已完成金额" },
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+            label: {
+              formatter: "{a|{a}}{abg|}\n{hr|}\n  {b|{b}:}{c}  {per|{d}%}  ",
+              backgroundColor: "",
+              borderColor: "",
+              borderWidth: 1,
+              borderRadius: 4,
+              rich: {},
+            },
+          },
+        ],
+      },true);
+    },
+    drawChart(){
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("myChart1"));
+      // 绘制图表
+      myChart.setOption({
         color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087'],
         title: {
-          text: '周图'
+          text: '一周内支付状况图'
         },
         tooltip: {
           trigger: 'axis',
@@ -243,13 +269,21 @@ export default {
           // }
         ]
       });
-    },
+    }
   },
- mounted() {
-    this.drawLine()
- }
+
+  mounted() {
+  },
+  created() {
+    const _this=this
+    _this.setAmountSum("已支付",0)
+    _this.setAmountSum("未支付",1)
+    _this.setAmountSum("已退款",2)
+    _this.setAmountSum("已完成",3)
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
 
+</style>

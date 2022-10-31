@@ -3,8 +3,8 @@
     <el-form style="margin-left: -40px" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="字段：" prop="key">
         <el-select v-model="ruleForm.key" style="width: 160px;float: left" placeholder="请选择字段">
-          <el-option label="景点名" value="scenic_name"></el-option>
-          <el-option label="景点id" value="id"></el-option>
+          <el-option label="订单id" value="id"></el-option>
+          <el-option label="订单价格" value="amount"></el-option>
         </el-select>
       </el-form-item>
       <div style="border: 0px solid red;width: 400px;height: 60px;position: relative;top: -64px;left: 270px">
@@ -23,50 +23,59 @@
       <el-table-column
           fixed
           prop="id"
-          label="ID"
+          label="订单ID"
           width="170">
       </el-table-column>
       <el-table-column
-          prop="scenicName"
-          label="景点名"
+          prop="amount"
+          label="订单价格"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="scenicAddress"
-          label="地址"
+          prop="togetherNumber"
+          label="同行人数"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="scenicDescribe"
-          label="描述"
+          prop="reservationTime"
+          label="预定时间"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="scenicImage"
-          label="图片"
+          prop="status"
+          label="订单状态"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="longitude"
-          label="经度"
+          prop="createTime"
+          label="创建时间"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="latitude"
-          label="纬度"
+          prop="updateTime"
+          label="更新时间"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="prov"
-          label="所属省份"
+          prop="createUser"
+          label="创建人"
           width="160">
+      </el-table-column>
+      <el-table-column
+          prop="updateUser"
+          label="修改人"
+          width="70">
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+              :disabled="scope.row.status== '已退款' ? true : false"
+              type="primary"
+              icon="el-icon-edit"
               size="mini"
               @click="edit(scope.row)">编辑</el-button>
           <el-button
+              icon="el-icon-delete"
               size="mini"
               type="danger"
               @click="del(scope.row)">删除</el-button>
@@ -117,7 +126,7 @@ export default {
         if (valid) {
           const _this = this
           _this.ruleForm.page = _this.currentPage
-          this.axios.get('http://localhost:9090/scenicspot/search',{params:_this.ruleForm}).then(function (resp) {
+          this.axios.get('http://localhost:9090/order/search',{params:_this.ruleForm}).then(function (resp) {
             _this.tableData = resp.data.data.data
             _this.total = resp.data.data.total
           })
@@ -127,20 +136,20 @@ export default {
     page(currentPage){
       const _this = this
       if(_this.ruleForm.value == ''){
-        this.axios.get('http://localhost:9090/scenicspot/list/'+currentPage+'/'+_this.pageSize).then(function (resp) {
+        this.axios.get('http://localhost:9090/order/list/'+currentPage+'/'+_this.pageSize).then(function (resp) {
           _this.tableData = resp.data.data.data
           _this.total = resp.data.data.total
         })
       } else {
         _this.ruleForm.page = _this.currentPage
-        this.axios.get('http://localhost:9090/scenicspot/search',{params:_this.ruleForm}).then(function (resp) {
+        this.axios.get('http://localhost:9090/order/search',{params:_this.ruleForm}).then(function (resp) {
           _this.tableData = resp.data.data.data
           _this.total = resp.data.data.total
         })
       }
     },
     edit(row){
-      this.$router.push('/admin/scenicspotmanager?id='+row.id)
+      this.$router.push('/admin/ordermanager?id='+row.id)
     },
     del(row) {
       const _this = this
@@ -149,7 +158,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.axios.delete('http://localhost:9090/scenicspot/deletebyid/'+row.id).then(function (resp) {
+        this.axios.delete('http://localhost:9090/order/deletebyid/'+row.id).then(function (resp) {
           if(resp.data.code==0){
             _this.$alert('【'+row.username+'】已删除', '', {
               confirmButtonText: '确定',
@@ -162,18 +171,13 @@ export default {
       });
     }
   },
-  // created() {
-  //   const _this = this
-  //   this.axios.get('http://localhost:8181/dormitoryAdmin/list/1/'+_this.pageSize).then(function (resp) {
-  //     _this.tableData = resp.data.data.data
-  //     _this.total = resp.data.data.total
-  //   })
-  // }
+
   created() {
     const _this=this
-    this.axios.get('http://localhost:9090/scenicspot/list/1/'+_this.pageSize).then(function(resp){
+    _this.axios.get('http://localhost:9090/order/list/1/'+_this.pageSize).then(function(resp){
       console.log("scenicspot resp",resp)
       _this.tableData=resp.data.data.data
+
       _this.total=resp.data.data.total
     })
   }

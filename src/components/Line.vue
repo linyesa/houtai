@@ -3,8 +3,8 @@
     <el-form style="margin-left: -40px" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="字段：" prop="key">
         <el-select v-model="ruleForm.key" style="width: 160px;float: left" placeholder="请选择字段">
-          <el-option label="景点名" value="scenic_name"></el-option>
-          <el-option label="景点id" value="id"></el-option>
+          <el-option label="线路名" value="line_name"></el-option>
+          <el-option label="线路id" value="id"></el-option>
         </el-select>
       </el-form-item>
       <div style="border: 0px solid red;width: 400px;height: 60px;position: relative;top: -64px;left: 270px">
@@ -23,42 +23,37 @@
       <el-table-column
           fixed
           prop="id"
-          label="ID"
+          label="线路ID"
           width="170">
       </el-table-column>
       <el-table-column
-          prop="scenicName"
-          label="景点名"
+          prop="lineName"
+          label="线路名"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="scenicAddress"
-          label="地址"
+          prop="lineCategory"
+          label="线路分类"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="scenicDescribe"
-          label="描述"
+          prop="sort"
+          label="线路分类排序"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="scenicImage"
-          label="图片"
+          prop="lineAmount"
+          label="线路价格"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="longitude"
-          label="经度"
+          prop="img"
+          label="线路图片"
           width="160">
       </el-table-column>
       <el-table-column
-          prop="latitude"
-          label="纬度"
-          width="160">
-      </el-table-column>
-      <el-table-column
-          prop="prov"
-          label="所属省份"
+          prop="remark"
+          label="线路备注"
           width="160">
       </el-table-column>
       <el-table-column label="操作">
@@ -117,7 +112,7 @@ export default {
         if (valid) {
           const _this = this
           _this.ruleForm.page = _this.currentPage
-          this.axios.get('http://localhost:9090/scenicspot/search',{params:_this.ruleForm}).then(function (resp) {
+          this.axios.get('http://localhost:9090/line/search',{params:_this.ruleForm}).then(function (resp) {
             _this.tableData = resp.data.data.data
             _this.total = resp.data.data.total
           })
@@ -127,20 +122,20 @@ export default {
     page(currentPage){
       const _this = this
       if(_this.ruleForm.value == ''){
-        this.axios.get('http://localhost:9090/scenicspot/list/'+currentPage+'/'+_this.pageSize).then(function (resp) {
+        this.axios.get('http://localhost:9090/line/list/'+currentPage+'/'+_this.pageSize).then(function (resp) {
           _this.tableData = resp.data.data.data
           _this.total = resp.data.data.total
         })
       } else {
         _this.ruleForm.page = _this.currentPage
-        this.axios.get('http://localhost:9090/scenicspot/search',{params:_this.ruleForm}).then(function (resp) {
+        this.axios.get('http://localhost:9090/line/search',{params:_this.ruleForm}).then(function (resp) {
           _this.tableData = resp.data.data.data
           _this.total = resp.data.data.total
         })
       }
     },
     edit(row){
-      this.$router.push('/admin/scenicspotmanager?id='+row.id)
+      this.$router.push('/admin/linemanager?id='+row.id)
     },
     del(row) {
       const _this = this
@@ -149,7 +144,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.axios.delete('http://localhost:9090/scenicspot/deletebyid/'+row.id).then(function (resp) {
+        this.axios.delete('http://localhost:9090/line/deletebyid/'+row.id).then(function (resp) {
           if(resp.data.code==0){
             _this.$alert('【'+row.username+'】已删除', '', {
               confirmButtonText: '确定',
@@ -162,16 +157,10 @@ export default {
       });
     }
   },
-  // created() {
-  //   const _this = this
-  //   this.axios.get('http://localhost:8181/dormitoryAdmin/list/1/'+_this.pageSize).then(function (resp) {
-  //     _this.tableData = resp.data.data.data
-  //     _this.total = resp.data.data.total
-  //   })
-  // }
+
   created() {
     const _this=this
-    this.axios.get('http://localhost:9090/scenicspot/list/1/'+_this.pageSize).then(function(resp){
+    this.axios.get('http://localhost:9090/line/list/1/'+_this.pageSize).then(function(resp){
       console.log("scenicspot resp",resp)
       _this.tableData=resp.data.data.data
       _this.total=resp.data.data.total

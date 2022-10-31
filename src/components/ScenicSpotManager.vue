@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       category:null,
+      id:"",
       ruleForm: {
         scenicname: '',
         scenicaddress: '',
@@ -96,10 +97,11 @@ export default {
           //     });
           //   }
           // })
-          this.axios.post("http://localhost:9090/scenicspot/save",_this.ruleForm).then(function (resp){
+          this.axios.post("http://localhost:9090/scenicspot/update/"+_this.id,_this.ruleForm).then(function (resp){
+            console.log("update post-----------------------")
             console.log(resp);
             if(resp.data.code == 0){
-              _this.$alert(_this.ruleForm.scenicname+'添加成功', '', {
+              _this.$alert(_this.ruleForm.scenicname+'修改成功', '', {
                 confirmButtonText: '确定',
                 callback: action => {
                   console.log(action)
@@ -117,7 +119,28 @@ export default {
   },
   created() {
     const _this=this
-    console.log(_this.$route.query.id)
+    console.log("manager id",_this.$route.query.id)
+    _this.id=_this.$route.query.id
+    this.axios.get("http://localhost:9090/scenicspot/getbyid/"+_this.$route.query.id).then(
+        function (resp){
+          console.log("manager resp",resp)
+          _this.ruleForm.scenicimage=resp.data.data.scenicImage
+          _this.ruleForm.scenicaddress=resp.data.data.scenicAddress
+          _this.ruleForm.scenicname=resp.data.data.scenicName
+          _this.ruleForm.scenicdescribe=resp.data.data.scenicDescribe
+          _this.ruleForm.longitude=resp.data.data.longitude
+          _this.ruleForm.latitude=resp.data.data.latitude
+          _this.ruleForm.prov=resp.data.data.prov
+          // _this.ruleForm.scenicimage=resp.data.data.data.scenicImage
+          // _this.ruleForm.scenicaddress=resp.data.data.data.scenicAddress
+          // _this.ruleForm.scenicname=resp.data.data.data.scenicName
+          // _this.ruleForm.scenicdescribe=resp.data.data.data.scenicDescribe
+          // _this.ruleForm.longitude=resp.data.data.data.longitude
+          // _this.ruleForm.latitude=resp.data.data.data.latitude
+          // _this.ruleForm.prov=resp.data.data.data.prov
+
+        }
+    )
   }
 }
 </script>

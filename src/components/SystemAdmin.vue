@@ -8,7 +8,9 @@
                     {{admin.username}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
                   </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-user" @click.native="logout">基本信息</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" @click.native="logout">密码设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button" @click.native="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -26,44 +28,49 @@
             <el-menu-item index="/admin/scenicspotadd" :class="$route.path=='/admin/scenicspotadd'?'is-active':''">
               <i class="el-icon-document-copy"></i>添加景点
             </el-menu-item>
-            <el-menu-item index="/dormitoryAdminManager" :class="$route.path=='/dormitoryAdminManager'?'is-active':''">
-              <i class="el-icon-document-copy"></i>信息查询
-            </el-menu-item>
-            <el-menu-item index="/dormitoryAdminManager" :class="$route.path=='/dormitoryAdminManager'?'is-active':''">
-              <i class="el-icon-document-copy"></i>删除信息
-            </el-menu-item>
+
           </el-submenu>
 
           <el-submenu index="2">
             <template slot="title"><i class="el-icon-user-solid"></i>路线管理</template>
-            <el-menu-item index="/studentAdd" :class="$route.path=='/studentAdd'?'is-active':''">
-              <i class="el-icon-folder-add"></i>信息查看
+            <el-menu-item index="/admin/line" :class="$route.path=='/admin/line'?'is-active':''">
+              <i class="el-icon-folder-add"></i>路线列表
             </el-menu-item>
-            <el-menu-item index="/studentManager">
-              <i class="el-icon-document-copy"></i>足迹分享
-            </el-menu-item>
-          </el-submenu>
-
-          <el-submenu index="3">
-            <template slot="title"><i class="el-icon-s-grid"></i>系统管理</template>
-            <el-menu-item index="/buildingAdd">
-              <i class="el-icon-folder-add"></i>用户管理
-            </el-menu-item>
-            <el-menu-item index="/buildingManager">
-              <i class="el-icon-document-copy"></i>信息管理
+            <el-menu-item index="/admin/lineadd">
+              <i class="el-icon-document-copy"></i>添加路线
             </el-menu-item>
           </el-submenu>
+          <el-menu-item index="/admin/usermanager">
+            <i class="el-icon-folder-add"></i>个人信息管理
+          </el-menu-item>
+<!--          <el-submenu index="3">-->
+<!--            <template slot="title"><i class="el-icon-s-grid"></i>系统管理</template>-->
+<!--            <el-menu-item index="/buildingAdd">-->
+<!--              <i class="el-icon-folder-add"></i>用户管理-->
+<!--            </el-menu-item>-->
+<!--            <el-menu-item index="/buildingManager">-->
+<!--              <i class="el-icon-document-copy"></i>信息管理-->
+<!--            </el-menu-item>-->
+<!--          </el-submenu>-->
 
           <el-submenu index="4">
             <template slot="title"><i class="el-icon-s-home"></i>订单管理</template>
-            <el-menu-item index="/dormitoryAdd">
-              <i class="el-icon-folder-add"></i>生成订单
+            <el-menu-item index="/admin/order">
+              <i class="el-icon-folder-add"></i>订单列表
             </el-menu-item>
-            <el-menu-item index="/dormitoryManager">
-              <i class="el-icon-document-copy"></i>查询订单
+            <el-menu-item index="/admin/orderadd">
+              <i class="el-icon-document-copy"></i>订单添加
             </el-menu-item>
           </el-submenu>
-
+          <el-submenu index="5">
+            <template slot="title"><i class="el-icon-s-home"></i>数据统计分析</template>
+            <el-menu-item index="/admin/datachart">
+              <i class="el-icon-folder-add"></i>订单数据
+            </el-menu-item>
+<!--            <el-menu-item index="/admin/orderadd">-->
+<!--              <i class="el-icon-document-copy"></i>订单添加-->
+<!--            </el-menu-item>-->
+          </el-submenu>
 <!--          <el-menu-item index="/moveoutRegister">-->
 <!--            <i class="el-icon-s-unfold"></i>-->
 <!--            <span slot="title">学生迁出登记</span>-->

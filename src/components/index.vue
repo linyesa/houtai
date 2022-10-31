@@ -28,6 +28,9 @@
           </el-row>
         </el-aside>
         <el-main>内容
+          <el-input type="text"
+                    placeholder="用户名"
+          ></el-input>
           <router-view></router-view>
         </el-main>
       </el-container>
