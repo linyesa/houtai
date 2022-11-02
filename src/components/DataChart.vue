@@ -18,7 +18,24 @@ export default {
   data(){
     return{
       orderByStatusSum:[234,3244,435,3453],
-
+      orderByWeekSum:[
+        {
+          status:"已支付",
+          data:[]
+        },
+        {
+          status:"未支付",
+          data:[]
+        },
+        {
+          status:"已退款",
+          data:[]
+        },
+        {
+          status:"已完成",
+          data:[]
+        },
+      ]
     }
   },
   methods: {
@@ -32,8 +49,20 @@ export default {
         // _this.orderByStatusSum[num]=resp.data
          _this.$set(_this.orderByStatusSum,index,resp.data)
         // _this.orderByStatusSum.splice(index,1,resp.data)
+
+
       })
     },
+    async setAmountSumByWeek(status,index){
+      const _this=this;
+      await _this.axios.get("http://localhost:9090/order/getamountsumbyweek/"+status).then(function (resp){
+        _this.orderByWeekSum[index].data=resp.data
+        // console.log("this is setamountsum",resp)
+        // console.log(index)
+        // console.log(_this.orderByWeekSum)
+      })
+    },
+
     drawLine() {
       const _this=this;
       // 基于准备好的dom，初始化echarts实例
@@ -84,6 +113,7 @@ export default {
       },true);
     },
     drawChart(){
+      const _this=this
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart1"));
       // 绘制图表
@@ -102,7 +132,7 @@ export default {
           }
         },
         legend: {
-          data: ['已支付', '已付款', '已退款', '已完成']
+          data: ['已支付', '未支付', '已退款', '已完成']
         },
         toolbox: {
           feature: {
@@ -119,7 +149,7 @@ export default {
           {
             type: 'category',
             boundaryGap: false,
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            data: ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
           }
         ],
         yAxis: [
@@ -153,10 +183,10 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [140, 232, 101, 264, 90, 340, 250]
+            data: _this.orderByWeekSum[0].data
           },
           {
-            name: '已付款',
+            name: '未支付',
             type: 'line',
             stack: 'Total',
             smooth: true,
@@ -180,7 +210,7 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [120, 282, 111, 234, 220, 340, 310]
+            data: _this.orderByWeekSum[1].data
           },
           {
             name: '已退款',
@@ -207,7 +237,7 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [320, 132, 201, 334, 190, 130, 220]
+            data: _this.orderByWeekSum[2].data
           },
           {
             name: '已完成',
@@ -234,7 +264,7 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [220, 402, 231, 134, 190, 230, 120]
+            data: _this.orderByWeekSum[3].data
           },
           // {
           //   name: 'Line 5',
@@ -280,6 +310,12 @@ export default {
     _this.setAmountSum("未支付",1)
     _this.setAmountSum("已退款",2)
     _this.setAmountSum("已完成",3)
+    this.setAmountSumByWeek("已支付",0)
+    this.setAmountSumByWeek("位支付",1)
+    this.setAmountSumByWeek("已退款",2)
+    this.setAmountSumByWeek("已完成",3)
+console.log(_this.orderByWeekSum)
+
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
 <!--    style="display: flex;justify-content: center"-->
-    <el-tabs v-model="activeName" @tab-click="handleClick" stretch="true">
+    <el-tabs v-model="activeName" @tab-click="handleClick" :stretch="true">
       <el-tab-pane label="登录" name="first" >
         <el-form :model="ruleForm" :rules="rules"
                                                       status-icon

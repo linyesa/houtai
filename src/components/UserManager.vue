@@ -1,32 +1,16 @@
 <template>
 <div>
   <el-tabs tab-position="left" style="height: 1000px">
-  <el-tab-pane label="基本信息"><h1 style="margin-left: 100px">基本设置</h1>
-    <el-row style="text-align: center">
-      <el-col :span="12">
-        <el-row type="flex">
-          <el-col :span="4">用户名称：</el-col>
-          <el-col :span="4"><el-input
-              placeholder="用户名称"
-              v-model="user.username"
-              :disabled="true">
-          </el-input>
-          </el-col>
-        </el-row>
-        <el-row type="flex">
-          <el-col :span="4">用户id：</el-col>
-          <el-col :span="4"><el-input
-              placeholder="用户名称"
-              v-model="user.username"
-              :disabled="true">
-          </el-input>
-          </el-col>
-        </el-row>
-      </el-col>
-<!--      <el-col :span="12" style="background-color: blue">-->
-<!--        右-->
-<!--      </el-col>-->
-    </el-row>
+  <el-tab-pane label="基本信息">
+    <el-descriptions title="基本设置" direction="vertical" :column="4" border>
+      <el-descriptions-item label="用户名">kooriookami</el-descriptions-item>
+      <el-descriptions-item label="手机号">18100000000</el-descriptions-item>
+      <el-descriptions-item label="居住地" :span="2">苏州市</el-descriptions-item>
+      <el-descriptions-item label="备注">
+        <el-tag size="small">学校</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="联系地址">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+    </el-descriptions>
   </el-tab-pane>
   <el-tab-pane label="密码设置">配置管理</el-tab-pane>
 </el-tabs>
