@@ -32,7 +32,7 @@
           </el-submenu>
 
           <el-submenu index="2">
-            <template slot="title"><i class="el-icon-user-solid"></i>路线管理</template>
+            <template slot="title"><i class="el-icon-location-outline"></i>路线管理</template>
             <el-menu-item index="/admin/line" :class="$route.path=='/admin/line'?'is-active':''">
               <i class="el-icon-folder-add"></i>路线列表
             </el-menu-item>
